@@ -1,97 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-
-import Typography from '@material-ui/core/Typography';
-import { Container } from '@material-ui/core';
-import Comments from '../Comments/Comments';
-
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+import { Container} from "@material-ui/core";
+import Comments from "../Comments/Comments";
 
 const useStyles = makeStyles({
-    root: {
-        maxWidth: 1200,
-    },
+  root: {
+    // maxWidth: 1024, (if need to limit width)
+  },
 });
 
-
 const PostDetail = () => {
-    const { postId } = useParams();
-    const [post, setPost] = useState([]);
-    const [comments, setComments] = useState([]);
+  const { postId } = useParams(); //catching postId by useParam instead of using props
+  const [post, setPost] = useState([]);
+  const [comments, setComments] = useState([]);
 
-    useEffect(() => {
-        commentLoad();
-        postLoad();
+  useEffect(() => {
+    commentLoad(); 
+    postLoad();
+  }, []);
 
-    }, []);
+// fetching posts
+  const postLoad = () => {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => setPost(data));
+  };
 
+  // fetching comment
+  const commentLoad = () => {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => setComments(data));
+  };
 
-    const commentLoad = () => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`, { method: "GET" })
-            .then(response => response.json())
-            .then(data => setComments(data))
-    }
-    const postLoad = () => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, { method: "GET" })
-            .then(response => response.json())
-            .then(data => setPost(data))
-    }
-
-
-
-
-
-    // console.log(post);
-    const { id, title, body } = post
-
-    const classes = useStyles();
-
-    const imgId = () => Math.floor(Math.random() * 95) + 1
+  const { id, title, body } = post;
+  const classes = useStyles();
 
 
+  return (
+    <Container >
+       
+      <Card className={classes.root}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="Contemplative Reptile"
+            height="300"
+            image={`https://picsum.photos/id/${id}/600/400`}
+            title="Contemplative Reptile"
+          />
 
-    return (
-        <Container>
-            <Card className={classes.root}>
-                <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {body}
+            </Typography>
+          </CardContent>
 
-                    <CardMedia
-                        component="img"
-                        alt="Contemplative Reptile"
-                        height="300"
-                        image={`https://picsum.photos/id/${id}/600/400`}
-                        title="Contemplative Reptile"
-                    />
+        </CardActionArea>
 
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {title}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {body}
-                        </Typography>
-                    </CardContent>
-
-                </CardActionArea>
-
-                {
-
-                    comments.map((comment) => (
-                        <div key={comment.id}>
-                            <Comments comment={comment} />
-                        </div>
-                    ))
-                }
-            </Card>
-
-        </Container>
-
-    );
+        {comments.map((comment) => (
+          <div key={comment.id}>
+            <Comments comment={comment} /> 
+          </div>
+        ))}
+      </Card>
+    </Container>
+  );
 };
 
 export default PostDetail;

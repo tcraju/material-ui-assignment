@@ -16,6 +16,8 @@ const Home = () => {
     return (
         
         <Container>
+          <br/>
+          <br/>
         <Grid container spacing={2}>
           {posts.map((post) => (
             <Grid key={post.id} item xs={12} md={6} lg = {4}>
