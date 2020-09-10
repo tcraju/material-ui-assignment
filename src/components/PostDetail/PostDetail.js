@@ -19,13 +19,6 @@ const useStyles = makeStyles({
 });
 
 
-
-
-
-
-
-
-
 const PostDetail = () => {
     const { postId } = useParams();
     const [post, setPost] = useState([]);
@@ -35,25 +28,16 @@ const PostDetail = () => {
         commentLoad();
         postLoad();
 
-    });
+    }, []);
 
 
-
-
-    // useEffect(() => {
-    //     fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-    //     .then( response => response.json())
-    //     .then(data => setPost(data))
-    // },[]);
-    
-    
     const commentLoad = () => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`, {method: "GET"} )
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`, { method: "GET" })
             .then(response => response.json())
             .then(data => setComments(data))
     }
     const postLoad = () => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {method: "GET"})
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, { method: "GET" })
             .then(response => response.json())
             .then(data => setPost(data))
     }
@@ -66,6 +50,8 @@ const PostDetail = () => {
     const { id, title, body } = post
 
     const classes = useStyles();
+
+    const imgId = () => Math.floor(Math.random() * 95) + 1
 
 
 
@@ -97,7 +83,7 @@ const PostDetail = () => {
 
                     comments.map((comment) => (
                         <div key={comment.id}>
-                            <Comments comment={comment}  />
+                            <Comments comment={comment} />
                         </div>
                     ))
                 }

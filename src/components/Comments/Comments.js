@@ -7,15 +7,19 @@ import '../Comments/Comments.css'
 
 
 const Comments = (props) => {
-    // console.log(props);
-    const {id, name, body, email} = props.comment;
+    console.log(props);
+    const {name, body, email} = props.comment;
+    const imgId =  Math.floor(Math.random() * 95) + 1
+   
 
     return (
         <div className='single-comment'>
         <Grid container spacing={1}>
          
           <Grid item md={2} xs={4}>
-            <img id='commentor' src={`https://randomuser.me/api/portraits/men/${id}.jpg`} alt=""/>
+           
+            <img id='commentor' src={`https://randomuser.me/api/portraits/men/${imgId}.jpg`} alt=""/>
+   
           </Grid>
           <Grid item md={10} xs={8}>
             
